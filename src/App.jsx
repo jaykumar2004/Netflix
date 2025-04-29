@@ -1,11 +1,12 @@
-import { useState } from 'react';
-
+import Body from "./components/Body/Body"
+import Browse from "./components/Browse/Browse"
 function App() {
 
   return (
-    <>
-      <h1 className='font-bold text-3xl'>Netflix</h1>
-    </>
+    <div>
+      <Body/>
+      <Browse/>
+    </div>
   )
 }
 
