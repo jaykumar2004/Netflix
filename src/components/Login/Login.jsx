@@ -1,6 +1,7 @@
+import Header from "../Header/Header.jsx"
 const Login = () => {
   return (
-    <div>Login</div>
+    <Header/>
   )
 }
 

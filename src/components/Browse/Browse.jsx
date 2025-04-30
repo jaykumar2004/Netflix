@@ -1,6 +1,6 @@
 const Browse = () => {
   return (
-    <div>Browse</div>
+    <div>Browser</div>
   )
 }
 
