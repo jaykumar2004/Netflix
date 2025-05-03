@@ -2,12 +2,22 @@ import { useState } from "react";
 import Header from "../Header/Header.jsx";
 import { useRef } from "react";
 import { checkValidData } from "../../utils/validate.js";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { auth } from "../../utils/firebase.js";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
 
   const [errorMessage, setErrorMessage] = useState(null);
 
+  const navigate = useNavigate();
+
+  const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
 
@@ -16,9 +26,57 @@ const Login = () => {
   };
 
   const handleButtonClick = () => {
-
-    const message = checkValidData(email.current.value,password.current.value);
+    const message = checkValidData(email.current.value, password.current.value);
     setErrorMessage(message);
+
+    if (message) return;
+
+    if (!isSignInForm) {
+      //sign up logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/106320129?v=4",
+          })
+            .then(() => {
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMessage(error.message)
+            });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    } else {
+      //sign in logic
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          navigate("/browse");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    }
   };
 
   return (
@@ -32,12 +90,16 @@ const Login = () => {
         />
         <div className="absolute inset-0 bg-black opacity-60" />
       </div>
-      <form onSubmit={(e)=>e.preventDefault()} className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-black/75 text-white p-12 rounded-md">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-black/75 text-white p-12 rounded-md"
+      >
         <h1 className="text-3xl font-bold mb-6">
           {isSignInForm ? "Sign In" : "Sign Up"}
         </h1>
         {!isSignInForm && (
           <input
+            ref={name}
             type="text"
             placeholder="Full Name"
             className="w-full p-4 mb-4 bg-gray-800 rounded text-white placeholder-gray-400 focus:outline-none"
@@ -59,7 +121,7 @@ const Login = () => {
         <p className="text-red-500 font-bold text-lg py-2">{errorMessage}</p>
 
         <button
-          className="w-full bg-red-600 hover:bg-red-700 transition-colors py-3 rounded font-semibold"
+          className="w-full bg-red-600 hover:bg-red-700 transition-colors py-3 rounded font-semibold cursor-pointer"
           onClick={handleButtonClick}
         >
           {isSignInForm ? "Sign In" : "Sign Up"}
