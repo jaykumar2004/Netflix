@@ -10,7 +10,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDnPbWTUowG_LV-EimuPojTTUbJ3JrVT1o",
   authDomain: "netflix-gpt-2807b.firebaseapp.com",
   projectId: "netflix-gpt-2807b",
-  storageBucket: "netflix-gpt-2807b.firebasestorage.app",
+  storageBucket: "netflix-gpt-2807b.appspot.com",
   messagingSenderId: "878307760696",
   appId: "1:878307760696:web:ac50468ba52d50ff1ce4cd",
   measurementId: "G-BD8RK3S6EP"
