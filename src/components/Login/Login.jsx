@@ -6,6 +6,8 @@ import { checkValidData } from "../../utils/validate.js";
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
 
+  const [errorMessage, setErrorMessage] = useState(null);
+
   const email = useRef(null);
   const password = useRef(null);
 
@@ -14,8 +16,9 @@ const Login = () => {
   };
 
   const handleButtonClick = () => {
-    console.log(email.current.value);
-    console.log(password.current.value);
+
+    const message = checkValidData(email.current.value,password.current.value);
+    setErrorMessage(message);
   };
 
   return (
@@ -52,12 +55,16 @@ const Login = () => {
           placeholder="Password"
           className="w-full p-4 mb-6 bg-gray-800 rounded text-white placeholder-gray-400 focus:outline-none"
         />
+
+        <p className="text-red-500 font-bold text-lg py-2">{errorMessage}</p>
+
         <button
           className="w-full bg-red-600 hover:bg-red-700 transition-colors py-3 rounded font-semibold"
           onClick={handleButtonClick}
         >
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
+
         <div className="flex justify-between items-center text-sm text-gray-400 mt-4"></div>
         <p className="py-4 cursor-pointer" onClick={toggleSignUpForm}>
           {isSignInForm
