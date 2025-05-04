@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Header from "../Header/Header.jsx";
-import { useRef } from "react";
 import { checkValidData } from "../../utils/validate.js";
 import {
   createUserWithEmailAndPassword,
@@ -9,13 +8,15 @@ import {
 } from "firebase/auth";
 import { auth } from "../../utils/firebase.js";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
-
   const [errorMessage, setErrorMessage] = useState(null);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -28,18 +29,16 @@ const Login = () => {
   const handleButtonClick = () => {
     const message = checkValidData(email.current.value, password.current.value);
     setErrorMessage(message);
-
     if (message) return;
 
     if (!isSignInForm) {
-      //sign up logic
+      // Sign Up Logic
       createUserWithEmailAndPassword(
         auth,
         email.current.value,
         password.current.value
       )
         .then((userCredential) => {
-          // Signed up
           const user = userCredential.user;
 
           updateProfile(user, {
@@ -47,34 +46,37 @@ const Login = () => {
             photoURL: "https://avatars.githubusercontent.com/u/106320129?v=4",
           })
             .then(() => {
+              // Manually update Redux store
+              dispatch(
+                addUser({
+                  uid: user.uid,
+                  email: user.email,
+                  displayName: name.current.value,
+                  photoURL: "https://avatars.githubusercontent.com/u/106320129?v=4",
+                })
+              );
               navigate("/browse");
             })
             .catch((error) => {
-              setErrorMessage(error.message)
+              setErrorMessage(error.message);
             });
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(errorCode + "-" + errorMessage);
+          setErrorMessage(error.code + " - " + error.message);
         });
     } else {
-      //sign in logic
+      // Sign In Logic
       signInWithEmailAndPassword(
         auth,
         email.current.value,
         password.current.value
       )
         .then((userCredential) => {
-          // Signed in
           const user = userCredential.user;
           navigate("/browse");
-          // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setErrorMessage(errorCode + "-" + errorMessage);
+          setErrorMessage(error.code + " - " + error.message);
         });
     }
   };
@@ -127,7 +129,6 @@ const Login = () => {
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
 
-        <div className="flex justify-between items-center text-sm text-gray-400 mt-4"></div>
         <p className="py-4 cursor-pointer" onClick={toggleSignUpForm}>
           {isSignInForm
             ? "New to Netflix? Sign Up Now"
