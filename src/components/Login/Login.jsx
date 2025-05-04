@@ -9,6 +9,7 @@ import {
 import { auth } from "../../utils/firebase.js";
 import { useDispatch } from "react-redux";
 import { addUser } from "../../utils/userSlice";
+import { USER_AVATAR } from "../../utils/constants.js";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -41,7 +42,7 @@ const Login = () => {
 
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL: "https://avatars.githubusercontent.com/u/106320129?v=4",
+            photoURL: USER_AVATAR,
           })
             .then(() => {
               // Manually update Redux store
