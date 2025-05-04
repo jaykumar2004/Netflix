@@ -25,10 +25,10 @@ const Header = () => {
         alt="logo"
       />
 
-      {user ? (
+      {user && (
         <div className="flex p-2">
           <img
-            src={user.photoURL}
+            src={user?.photoURL}
             className="w-12 h-12 rounded-full"
             alt="user-profile"
           />
@@ -39,8 +39,6 @@ const Header = () => {
             (Sign Out)
           </button>
         </div>
-      ) : (
-        <div className="text-white p-2"></div>
       )}
     </div>
   );

@@ -27,10 +27,10 @@ const Body = () => {
         const { uid, email, displayName, photoURL } = user;
         dispatch(
           addUser({
-            uid,
-            email,
-            displayName,
-            photoURL,
+            uid:uid,
+            email:email,
+            displayName:displayName,
+            photoURL:photoURL,
           })
         );
       } else {

@@ -47,12 +47,13 @@ const Login = () => {
           })
             .then(() => {
               // Manually update Redux store
+              const{uid, email,displayName,photoURL} = auth.currentUser;
               dispatch(
                 addUser({
-                  uid: user.uid,
-                  email: user.email,
-                  displayName: name.current.value,
-                  photoURL: "https://avatars.githubusercontent.com/u/106320129?v=4",
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
                 })
               );
               navigate("/browse");
