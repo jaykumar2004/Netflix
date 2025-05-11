@@ -17,7 +17,7 @@ export const API_OPTIONS = {
   headers: {
     accept: "application/json",
     Authorization:
-      "Bearer " + import.meta.env.VITE_TMBD_KEY,
+      "Bearer " + import.meta.env.VITE_APP_TMDB_KEY,
   },
 };
 

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import lang from "../../utils/languageConstants";
 import { useDispatch, useSelector } from "react-redux";
 import { API_OPTIONS } from "../../utils/constants";
-import { addGPtMovieResult } from "../../utils/gptSlice";
+import { addGptMovieResult } from "../../utils/gptSlice";
 
 const GptSearchBar = () => {
   const dispatch = useDispatch();
@@ -81,16 +81,16 @@ Example format: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya
       const promiseArray = gptMovies.map((movie) => searchMovieTMBD(movie));
       const tmbdResults = await Promise.all(promiseArray);
       console.log("TMDB Results:", tmbdResults);
-      dispatch(addGPtMovieResult({movieNames: gptMovies,movieResults: tmbdResults}));
+      dispatch(addGptMovieResult({movieNames: gptMovies,movieResults: tmbdResults}));
     } catch (err) {
       console.error("TMDB fetch failed:", err);
     }
   };
 
   return (
-    <div className="pt-[10%] flex flex-col items-center">
+    <div className="pt-[35%] md:pt-[10%] flex flex-col items-center">
       <form
-        className="w-1/2 bg-black grid grid-cols-12"
+        className="w-full md:w-1/2 bg-black grid grid-cols-12"
         onSubmit={(e) => e.preventDefault()}
       >
         <input
@@ -106,17 +106,6 @@ Example format: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya
           {lang[langKey].search}
         </button>
       </form>
-
-      {/* {movieSuggestions.length > 0 && (
-        <div className="mt-4 bg-gray-900 text-white p-4 rounded-lg w-1/2">
-          <h2 className="text-lg font-semibold mb-2">Recommended Movies:</h2>
-          <ul className="list-disc list-inside">
-            {movieSuggestions.map((movie, index) => (
-              <li key={index}>{movie}</li>
-            ))}
-          </ul>
-        </div>
-      )} */}
     </div>
   );
 };
