@@ -64,10 +64,8 @@ Example format: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya
           .slice(0, 5);
 
         setMovieSuggestions(gptMovies);
-        console.log("Suggested Movies:", gptMovies);
       } else {
         setMovieSuggestions([]);
-        console.log("No result from model.");
         return;
       }
     } catch (error) {
@@ -80,7 +78,6 @@ Example format: Gadar, Sholay, Don, Golmaal, Koi Mil Gaya
     try {
       const promiseArray = gptMovies.map((movie) => searchMovieTMBD(movie));
       const tmbdResults = await Promise.all(promiseArray);
-      console.log("TMDB Results:", tmbdResults);
       dispatch(addGptMovieResult({movieNames: gptMovies,movieResults: tmbdResults}));
     } catch (err) {
       console.error("TMDB fetch failed:", err);
