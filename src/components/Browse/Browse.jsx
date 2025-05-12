@@ -1,7 +1,7 @@
 import Header from "../Header/Header";
 import useNowPlayingMovies from "../hooks/useNowPlayingMovies";
 import usePopularMovies from "../hooks/usePopularMovies";
-import MainContainer from "./mainContainer";
+import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
 import GptSearch from "../Gpt/GptSearch";
 import { useSelector } from "react-redux";
